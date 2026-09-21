@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Shifo Clinic — Ishonchli tibbiy platforma</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    color-scheme: light;
+    --teal-700:#0D9488;
+    --teal-600:#0EA5E9;
+    --slate-900:#0F172A;
+    --slate-700:#334155;
+    --slate-500:#64748B;
+    --slate-300:#CBD5E1;
+    --slate-200:#E2E8F0;
+    --slate-100:#EEF2F6;
+    --mint-600:#10B981;
+    --mint-50:#ECFDF5;
+    --amber-600:#F59E0B;
+    --amber-50:#FFFBEB;
+    --red-600:#DC2626;
+    --red-50:#FEF2F2;
+    --bg:#F8FAFC;
+    --card:#FFFFFF;
+    --radius-card: 16px;
+    --safe-t: env(safe-area-inset-top, 0px);
+    --safe-b: env(safe-area-inset-bottom, 0px);
+    box-sizing: border-box;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;background:var(--bg);}
+  html{scroll-padding-top: calc(80px + var(--safe-t)); scroll-behavior:smooth;}
+  body{
+    font-family:'Inter',system-ui,-apple-system,sans-serif;
+    color:var(--slate-900);
+    -webkit-font-smoothing:antialiased;
+    padding-top: var(--safe-t);
+    padding-bottom: var(--safe-b);
+  }
+  h1,h2,h3,h4,.font-display{font-family:'Plus Jakarta Sans','Inter',system-ui,sans-serif;}
+  .container{max-width:1200px;margin:0 auto;padding-left:20px;padding-right:20px;}
+  a{text-decoration:none;color:inherit;}
+  button{font-family:inherit;cursor:pointer;}
+  ::selection{background:var(--teal-700);color:#fff;}
+  :focus-visible{outline:2px solid var(--teal-600); outline-offset:2px;}
+
+  /* Logo mark */
+  .logo-mark{width:36px;height:36px;flex-shrink:0;}
+
+  /* Header */
+  header.site{position:sticky;top:0;z-index:40;background:rgba(255,255,255,0.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--slate-200);}
+  .nav-link{font-size:14.5px;font-weight:500;color:var(--slate-700);padding:8px 2px;position:relative;}
+  .nav-link::after{content:"";position:absolute;left:0;right:0;bottom:2px;height:2px;background:var(--teal-700);transform:scaleX(0);transform-origin:left;transition:transform .2s ease;}
+  .nav-link:hover::after{transform:scaleX(1);}
+  .nav-link:hover{color:var(--slate-900);}
+
+  .btn-primary{background:var(--slate-900);color:#fff;border:none;border-radius:10px;padding:11px 20px;font-weight:600;font-size:14.5px;transition:background .15s ease, transform .1s ease;}
+  .btn-primary:hover{background:var(--teal-700);}
+  .btn-primary:active{transform:scale(0.98);}
+  .btn-ghost{background:transparent;border:1px solid var(--slate-300);border-radius:10px;padding:10px 18px;font-weight:600;font-size:14.5px;color:var(--slate-700);}
+  .btn-ghost:hover{border-color:var(--teal-700);color:var(--teal-700);}
+
+  .lang-pill{display:flex;align-items:center;gap:2px;background:var(--slate-100);border-radius:999px;padding:3px;}
+  .lang-pill button{border:none;background:transparent;font-size:12.5px;font-weight:700;letter-spacing:.02em;padding:6px 10px;border-radius:999px;color:var(--slate-500);}
+  .lang-pill button.active{background:var(--slate-900);color:#fff;}
+
+  /* Hero */
+  .hero{position:relative;overflow:hidden;background:linear-gradient(180deg,#F8FAFC 0%, #F1F8F9 100%);border-bottom:1px solid var(--slate-200);}
+  .hero-pulse{position:absolute;inset:0;opacity:0.5;pointer-events:none;}
+  .stat-num{font-family:'Plus Jakarta Sans';font-weight:800;font-size:26px;color:var(--slate-900);}
+  .stat-label{font-size:12.5px;color:var(--slate-500);font-weight:500;}
+
+  .search-shell{background:#fff;border:1px solid var(--slate-200);border-radius:16px;box-shadow:0 8px 24px -12px rgba(15,23,42,.12);}
+  .search-input{border:none;outline:none;font-size:15px;width:100%;background:transparent;color:var(--slate-900);}
+  .search-input::placeholder{color:var(--slate-500);}
+
+  /* Chips */
+  .chip{border:1px solid var(--slate-200);background:#fff;border-radius:999px;padding:8px 16px;font-size:13.5px;font-weight:600;color:var(--slate-700);white-space:nowrap;transition:all .15s ease;}
+  .chip:hover{border-color:var(--teal-700);color:var(--teal-700);}
+  .chip.active{background:var(--slate-900);border-color:var(--slate-900);color:#fff;}
+
+  /* Doctor card */
+  .doc-card{background:var(--card);border:1px solid var(--slate-200);border-radius:var(--radius-card);overflow:hidden;transition:box-shadow .2s ease, transform .2s ease;}
+  .doc-card:hover{box-shadow:0 16px 32px -16px rgba(15,23,42,.18);transform:translateY(-2px);}
+  .avatar{width:64px;height:64px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-family:'Plus Jakarta Sans';font-weight:700;font-size:20px;color:#fff;flex-shrink:0;}
+  .rating-badge{display:inline-flex;align-items:center;gap:4px;background:var(--amber-50);color:#92600A;border-radius:8px;padding:3px 8px;font-size:12.5px;font-weight:700;}
+  .price-tag{font-family:'Plus Jakarta Sans';font-weight:800;font-size:17px;color:var(--slate-900);}
+
+  /* Status badges */
+  .badge{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:5px 12px;font-size:12.5px;font-weight:700;}
+  .badge-pending{background:var(--amber-50);color:#92600A;}
+  .badge-confirmed{background:var(--mint-50);color:#046C4E;}
+  .badge-cancelled{background:var(--red-50);color:#991B1B;}
+  .badge-completed{background:#EFF6FF;color:#1D4ED8;}
+  .dot{width:6px;height:6px;border-radius:50%;background:currentColor;}
+
+  /* Modal */
+  .modal-backdrop{position:fixed;inset:0;background:rgba(15,23,42,.5);backdrop-filter:blur(2px);z-index:100;display:flex;align-items:flex-end;justify-content:center;opacity:0;pointer-events:none;transition:opacity .2s ease;}
+  .modal-backdrop.open{opacity:1;pointer-events:auto;}
+  @media(min-width:640px){.modal-backdrop{align-items:center;}}
+  .modal-panel{background:#fff;width:100%;max-width:520px;border-radius:20px 20px 0 0;max-height:92vh;overflow-y:auto;transform:translateY(24px);transition:transform .25s cubic-bezier(.2,.8,.2,1);padding-bottom:calc(20px + var(--safe-b));}
+  .modal-backdrop.open .modal-panel{transform:translateY(0);}
+  @media(min-width:640px){.modal-panel{border-radius:20px;margin:20px;}}
+
+  .step-dot{width:8px;height:8px;border-radius:50%;background:var(--slate-200);transition:all .2s ease;}
+  .step-dot.active{background:var(--teal-700);width:22px;border-radius:5px;}
+  .step-dot.done{background:var(--mint-600);}
+
+  .slot-btn{border:1px solid var(--slate-200);border-radius:10px;padding:10px 6px;font-size:13.5px;font-weight:600;color:var(--slate-700);background:#fff;text-align:center;}
+  .slot-btn:hover{border-color:var(--teal-700);}
+  .slot-btn.selected{background:var(--slate-900);border-color:var(--slate-900);color:#fff;}
+  .slot-btn:disabled{opacity:.35;text-decoration:line-through;cursor:not-allowed;}
+
+  .date-chip{border:1px solid var(--slate-200);border-radius:14px;padding:10px 4px;min-width:58px;text-align:center;background:#fff;}
+  .date-chip .d{font-size:11px;color:var(--slate-500);font-weight:600;}
+  .date-chip .n{font-family:'Plus Jakarta Sans';font-weight:800;font-size:17px;}
+  .date-chip.selected{background:var(--slate-900);border-color:var(--slate-900);color:#fff;}
+  .date-chip.selected .d{color:#CBD5E1;}
+
+  .field-input{width:100%;border:1px solid var(--slate-200);border-radius:10px;padding:11px 14px;font-size:14.5px;color:var(--slate-900);background:#fff;}
+  .field-input:focus{border-color:var(--teal-700);outline:2px solid rgba(13,148,136,.15);}
+  .field-label{font-size:13px;font-weight:600;color:var(--slate-700);margin-bottom:6px;display:block;}
+
+  /* Dashboard */
+  .dash-shell{display:grid;grid-template-columns:260px 1fr;min-height:100vh;background:var(--bg);}
+  @media(max-width:900px){.dash-shell{grid-template-columns:1fr;}}
+  .dash-sidebar{background:var(--slate-900);color:#fff;padding:24px 18px;display:flex;flex-direction:column;gap:6px;}
+  @media(max-width:900px){.dash-sidebar{position:sticky;top:0;z-index:30;flex-direction:row;align-items:center;padding:14px 18px;overflow-x:auto;}}
+  .dash-navlink{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;font-size:14px;font-weight:600;color:#CBD5E1;white-space:nowrap;}
+  .dash-navlink:hover{background:rgba(255,255,255,.06);color:#fff;}
+  .dash-navlink.active{background:rgba(13,148,136,.18);color:#5EEAD4;}
+  .stat-card{background:#fff;border:1px solid var(--slate-200);border-radius:16px;padding:18px;position:relative;overflow:hidden;}
+  .stat-card .accent{position:absolute;top:0;left:0;right:0;height:3px;}
+  .appt-row{background:#fff;border:1px solid var(--slate-200);border-radius:14px;padding:16px;}
+  .icon-btn{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;border:1px solid var(--slate-200);background:#fff;}
+  .act-btn{border:none;border-radius:9px;padding:8px 13px;font-size:12.5px;font-weight:700;color:#fff;white-space:nowrap;}
+  .act-confirm{background:var(--mint-600);}
+  .act-confirm:hover{background:#0D9C6E;}
+  .act-cancel{background:#fff;color:var(--red-600);border:1px solid #FCA5A5;}
+  .act-cancel:hover{background:var(--red-50);}
+  .act-done{background:#2563EB;}
+  .act-done:hover{background:#1D4ED8;}
+
+  .alert-banner{background:linear-gradient(90deg,#0D9488,#0EA5E9);color:#fff;border-radius:14px;padding:14px 18px;display:flex;align-items:center;gap:14px;box-shadow:0 10px 24px -10px rgba(13,148,136,.5);}
+
+  .mode-switch{position:fixed;right:16px;bottom:calc(16px + var(--safe-b));z-index:60;background:#0F172A;color:#fff;border-radius:999px;padding:6px;display:flex;gap:4px;box-shadow:0 12px 30px -8px rgba(0,0,0,.4);}
+  .mode-switch button{border:none;background:transparent;color:#94A3B8;font-size:12.5px;font-weight:700;padding:8px 14px;border-radius:999px;}
+  .mode-switch button.active{background:#0EA5E9;color:#fff;}
+
+  ::-webkit-scrollbar{height:8px;width:8px;}
+  ::-webkit-scrollbar-thumb{background:var(--slate-300);border-radius:99px;}
+
+  [data-view="dashboard"]{display:none;}
+  body.view-dashboard [data-view="patient"]{display:none;}
+  body.view-dashboard [data-view="dashboard"]{display:block;}
+
+  .hide-scrollbar::-webkit-scrollbar{display:none;}
+  .hide-scrollbar{-ms-overflow-style:none;scrollbar-width:none;}
+
+  .fade-in{animation:fadeIn .35s ease both;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+  .pulse-ring{animation:pulseRing 2s ease-in-out infinite;}
+  @keyframes pulseRing{0%,100%{opacity:.5;}50%{opacity:1;}}
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:.001ms !important; transition-duration:.001ms !important;}
+  }
+</style>
+</head>
+<body>
+
+<!-- ================= PATIENT VIEW ================= -->
+<div data-view="patient">
+
+  <header class="site">
+    <div class="container flex items-center justify-between" style="display:flex;height:72px;">
+      <a href="#" class="flex items-center gap-2" style="display:flex;align-items:center;gap:10px;">
+        <svg class="logo-mark" viewBox="0 0 40 40" fill="none">
+          <rect width="40" height="40" rx="11" fill="#0F172A"/>
+          <path d="M20 10c-3.5 0-6 2.7-6 6.2 0 4.6 4.2 7.9 6 9.2 1.8-1.3 6-4.6 6-9.2 0-3.5-2.5-6.2-6-6.2Z" fill="#0EA5E9"/>
+          <path d="M11 22h4l1.6-3.4L18.6 25l2-6.5 1.4 3.5H29" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        </svg>
+        <div style="line-height:1.05;">
+          <div class="font-display" style="font-weight:800;font-size:18px;color:var(--slate-900);">Shifo Clinic</div>
+          <div style="font-size:10.5px;color:var(--slate-500);font-weight:600;letter-spacing:.01em;">Ishonchli tibbiy yordam</div>
+        </div>
+      </a>
+
+      <nav class="hidden md:flex" style="display:none;gap:28px;align-items:center;" id="desktopNav">
+        <a href="#hero" class="nav-link">Bosh sahifa</a>
+        <a href="#doctors" class="nav-link">Shifokorlar</a>
+        <a href="#services" class="nav-link">Xizmatlar</a>
+        <a href="#about" class="nav-link">Biz haqimizda</a>
+        <a href="#contact" class="nav-link">Bog'lanish</a>
+      </nav>
+
+      <div style="display:flex;align-items:center;gap:12px;">
+        <div class="lang-pill" id="langPill">
+          <button data-lang="UZ" class="active">UZ</button>
+          <button data-lang="RU">RU</button>
+          <button data-lang="ENG">ENG</button>
+        </div>
+        <button class="btn-primary hidden sm:inline-block" id="ctaBook" style="display:none;">Qabulga yozilish</button>
+        <button class="icon-btn md:hidden" id="menuToggle" style="display:flex;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </button>
+      </div>
+    </div>
+    <!-- mobile nav -->
+    <div id="mobileNav" style="display:none;border-top:1px solid var(--slate-200);">
+      <div class="container" style="padding-top:12px;padding-bottom:16px;display:flex;flex-direction:column;gap:4px;">
+        <a href="#hero" class="nav-link" style="padding:10px 0;">Bosh sahifa</a>
+        <a href="#doctors" class="nav-link" style="padding:10px 0;">Shifokorlar</a>
+        <a href="#services" class="nav-link" style="padding:10px 0;">Xizmatlar</a>
+        <a href="#about" class="nav-link" style="padding:10px 0;">Biz haqimizda</a>
+        <a href="#contact" class="nav-link" style="padding:10px 0;">Bog'lanish</a>
+        <button class="btn-primary" style="margin-top:8px;width:100%;" id="ctaBookMobile">Qabulga yozilish</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero" id="hero">
+    <div class="container" style="padding-top:64px;padding-bottom:56px;position:relative;">
+      <div style="max-width:680px;">
+        <div style="display:inline-flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--slate-200);border-radius:999px;padding:6px 14px 6px 8px;margin-bottom:22px;">
+          <span style="width:22px;height:22px;border-radius:50%;background:var(--mint-50);display:flex;align-items:center;justify-content:center;">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg>
+          </span>
+          <span style="font-size:12.5px;font-weight:600;color:var(--slate-700);">Sertifikatlangan shifokorlar, kafolatlangan sifat</span>
+        </div>
+        <h1 class="font-display" style="font-size:40px;line-height:1.15;font-weight:800;color:var(--slate-900);margin:0 0 16px;">
+          Sog'lig'ingizni tajribali shifokorlarga ishoning
+        </h1>
+        <p style="font-size:16px;color:var(--slate-700);line-height:1.6;margin:0 0 32px;max-width:520px;">
+          Shifo Clinic orqali o'zingizga mos mutaxassisni toping, bir necha bosishda onlayn qabulga yoziling va sog'lig'ingiz tarixini bir joyda kuzating.
+        </p>
+
+        <div class="search-shell" style="padding:8px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+          <div style="display:flex;align-items:center;gap:10px;flex:1;min-width:220px;padding:8px 12px;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#64748B" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+            <input class="search-input" id="doctorSearch" placeholder="Shifokor ismi yoki mutaxassislik...">
+          </div>
+          <button class="btn-primary" id="searchBtn" style="padding:13px 24px;">Qidirish</button>
+        </div>
+
+        <div style="display:flex;gap:32px;margin-top:40px;flex-wrap:wrap;">
+          <div><div class="stat-num">{{ doctors|length }}</div><div class="stat-label">Shifokorlar</div></div>
+          <div><div class="stat-num">24/7</div><div class="stat-label">Yordam xizmati</div></div>
+          <div><div class="stat-num">4.9<span style="font-size:14px;">/5</span></div><div class="stat-label">O'rtacha reyting</div></div>
+          <div><div class="stat-num">3,200+</div><div class="stat-label">Mamnun bemorlar</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DOCTOR CATALOG -->
+  <section id="doctors" style="padding:64px 0;">
+    <div class="container">
+      <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap;margin-bottom:28px;">
+        <div>
+          <h2 class="font-display" style="font-size:26px;font-weight:800;margin:0 0 6px;color:var(--slate-900);">Bizning shifokorlar</h2>
+          <p style="color:var(--slate-500);font-size:14.5px;margin:0;">Mutaxassislik bo'yicha tanlang va qulay vaqtga yoziling</p>
+        </div>
+      </div>
+
+      <div style="display:flex;gap:10px;overflow-x:auto;padding-bottom:6px;margin-bottom:28px;" class="hide-scrollbar" id="specialtyFilters"></div>
+
+      <div id="doctorGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px;"></div>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section id="services" style="padding:56px 0;background:#fff;border-top:1px solid var(--slate-200);border-bottom:1px solid var(--slate-200);">
+    <div class="container">
+      <h2 class="font-display" style="font-size:26px;font-weight:800;margin:0 0 28px;color:var(--slate-900);">Xizmatlarimiz</h2>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:18px;">
+        <div style="border:1px solid var(--slate-200);border-radius:14px;padding:20px;">
+          <div style="width:40px;height:40px;border-radius:10px;background:var(--mint-50);display:flex;align-items:center;justify-content:center;margin-bottom:14px;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2"><path d="M8 2v4M16 2v4M3 10h18M5 4h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Z"/></svg>
+          </div>
+          <h3 style="font-size:15.5px;font-weight:700;margin:0 0 6px;">Onlayn qabulga yozilish</h3>
+          <p style="font-size:13.5px;color:var(--slate-500);margin:0;line-height:1.55;">Kalendar orqali bo'sh vaqtni tanlang va bir necha soniyada tasdiqlang.</p>
+        </div>
+        <div style="border:1px solid var(--slate-200);border-radius:14px;padding:20px;">
+          <div style="width:40px;height:40px;border-radius:10px;background:#EFF6FF;display:flex;align-items:center;justify-content:center;margin-bottom:14px;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3-8.7A2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.3 1.8.6 2.7a2 2 0 0 1-.5 2.1L8 9.7a16 16 0 0 0 6 6l1.2-1.2a2 2 0 0 1 2.1-.5c.9.3 1.8.5 2.7.6a2 2 0 0 1 1.7 2Z"/></svg>
+          </div>
+          <h3 style="font-size:15.5px;font-weight:700;margin:0 0 6px;">24/7 qo'llab-quvvatlash</h3>
+          <p style="font-size:13.5px;color:var(--slate-500);margin:0;line-height:1.55;">Har qanday savol bo'yicha kun-u tun operatorlarimizga murojaat qiling.</p>
+        </div>
+        <div style="border:1px solid var(--slate-200);border-radius:14px;padding:20px;">
+          <div style="width:40px;height:40px;border-radius:10px;background:var(--amber-50);display:flex;align-items:center;justify-content:center;margin-bottom:14px;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#F59E0B" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6M9 15h6M9 11h2"/></svg>
+          </div>
+          <h3 style="font-size:15.5px;font-weight:700;margin:0 0 6px;">Bemor tarixi</h3>
+          <p style="font-size:13.5px;color:var(--slate-500);margin:0;line-height:1.55;">Barcha tashrif va tavsiyalaringiz shaxsiy kabinetda saqlanadi.</p>
+        </div>
+        <div style="border:1px solid var(--slate-200);border-radius:14px;padding:20px;">
+          <div style="width:40px;height:40px;border-radius:10px;background:#F5F3FF;display:flex;align-items:center;justify-content:center;margin-bottom:14px;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#7C3AED" stroke-width="2"><path d="M12 2 3 7v6c0 5 4 9 9 9s9-4 9-9V7Z"/><path d="m9 12 2 2 4-4"/></svg>
+          </div>
+          <h3 style="font-size:15.5px;font-weight:700;margin:0 0 6px;">Kafolatlangan sifat</h3>
+          <p style="font-size:13.5px;color:var(--slate-500);margin:0;line-height:1.55;">Barcha shifokorlar litsenziyaga va tekshirilgan tajribaga ega.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  
+  <section id="about" style="padding:64px 0;">
+    <div class="container" style="display:grid;grid-template-columns:1fr;gap:32px;align-items:center;">
+      <div style="max-width:640px;">
+        <h2 class="font-display" style="font-size:26px;font-weight:800;margin:0 0 14px;color:var(--slate-900);">Biz haqimizda</h2>
+        <p style="font-size:14.5px;color:var(--slate-700);line-height:1.7;margin:0 0 14px;">
+          Shifo Clinic — bemorlarni malakali shifokorlar bilan bog'laydigan zamonaviy tibbiy platforma. Maqsadimiz — sifatli tibbiy yordamni har bir kishi uchun sodda va qulay qilish.
+        </p>
+        <p style="font-size:14.5px;color:var(--slate-700);line-height:1.7;margin:0;">
+          2019-yildan buyon minglab bemorlarga o'z shifokorini topishda va sog'lig'i tarixini boshqarishda yordam berib kelmoqdamiz.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer id="contact" style="background:var(--slate-900);color:#CBD5E1;padding:48px 0 28px;">
+    <div class="container" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:32px;">
+      <div>
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
+          <svg width="30" height="30" viewBox="0 0 40 40" fill="none">
+            <rect width="40" height="40" rx="11" fill="#0EA5E9"/>
+            <path d="M20 10c-3.5 0-6 2.7-6 6.2 0 4.6 4.2 7.9 6 9.2 1.8-1.3 6-4.6 6-9.2 0-3.5-2.5-6.2-6-6.2Z" fill="#0F172A"/>
+          </svg>
+          <span class="font-display" style="font-weight:800;color:#fff;font-size:16px;">Shifo Clinic</span>
+        </div>
+        <p style="font-size:13px;line-height:1.6;color:#94A3B8;margin:0;">Ishonchli tibbiy yordam — har doim yoningizda.</p>
+      </div>
+      <div>
+        <h4 style="color:#fff;font-size:13.5px;margin:0 0 14px;">Navigatsiya</h4>
+        <div style="display:flex;flex-direction:column;gap:10px;font-size:13.5px;">
+          <a href="#hero" style="color:#94A3B8;">Bosh sahifa</a>
+          <a href="#doctors" style="color:#94A3B8;">Shifokorlar</a>
+          <a href="#services" style="color:#94A3B8;">Xizmatlar</a>
+        </div>
+      </div>
+      <div>
+        <h4 style="color:#fff;font-size:13.5px;margin:0 0 14px;">Bog'lanish</h4>
+        <div style="display:flex;flex-direction:column;gap:10px;font-size:13.5px;color:#94A3B8;">
+          <span>+998 71 200 00 00</span>
+          <span>info@shifoclinic.uz</span>
+          <span>Toshkent, Yunusobod tumani</span>
+        </div>
+      </div>
+      <div>
+        <h4 style="color:#fff;font-size:13.5px;margin:0 0 14px;">Shifokorlar uchun</h4>
+        <a href="#" id="toDashboardLink" style="font-size:13.5px;color:#5EEAD4;font-weight:600;">Shifokor kabinetiga kirish →</a>
+      </div>
+    </div>
+    <div class="container" style="margin-top:32px;padding-top:20px;border-top:1px solid rgba(255,255,255,.08);font-size:12px;color:#64748B;">
+      © 2026 Shifo Clinic. Barcha huquqlar himoyalangan.
+    </div>
+  </footer>
+</div>
+
+<!-- ================= BOOKING MODAL ================= -->
+<div class="modal-backdrop" id="modalBackdrop">
+  <div class="modal-panel" id="modalPanel">
+    <div style="padding:20px 22px 0;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;">
+        <div style="display:flex;gap:6px;" id="stepDots">
+          <div class="step-dot"></div><div class="step-dot"></div><div class="step-dot"></div>
+        </div>
+        <button class="icon-btn" id="modalClose"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#334155" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+      </div>
+    </div>
+    <div id="modalBody" style="padding:0 22px 22px;"></div>
+  </div>
+</div>
+
+<!-- ================= DOCTOR DASHBOARD ================= -->
+<div data-view="dashboard">
+  <div class="dash-shell">
+    <aside class="dash-sidebar">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;padding:0 8px 20px;border-bottom:1px solid rgba(255,255,255,.08);">
+        <div class="avatar" style="background:linear-gradient(135deg,#0EA5E9,#0D9488);width:44px;height:44px;font-size:16px;">DK</div>
+        <div style="min-width:0;">
+          <div style="font-weight:700;font-size:14px;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Dr. Dilnoza Karimova</div>
+          <div style="font-size:12px;color:#5EEAD4;">Kardiolog</div>
+        </div>
+      </div>
+      <a href="#" class="dash-navlink active" data-tab="dashboard">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>
+        Dashboard
+      </a>
+      <a href="#" class="dash-navlink" data-tab="appts">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/></svg>
+        Qabullar ro'yxati
+      </a>
+      <a href="#" class="dash-navlink" data-tab="history">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+        Bemorlar tarixi
+      </a>
+      <a href="#" class="dash-navlink" data-tab="settings">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.6-1.1 1.7 1.7 0 0 0-.3-1.9l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.9.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.9-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.9V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1Z"/></svg>
+        Sozlamalar
+      </a>
+      <a href="#" style="margin-top:auto;" class="dash-navlink" id="backToSite">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        Saytga qaytish
+      </a>
+    </aside>
+
+    <main style="padding:24px 20px 60px;max-width:1120px;">
+      <div id="alertBannerSlot" style="margin-bottom:20px;"></div>
+
+      <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:22px;flex-wrap:wrap;gap:12px;">
+        <div>
+          <h1 class="font-display" style="font-size:22px;font-weight:800;margin:0 0 4px;">Xush kelibsiz, Dilnoza!</h1>
+          <p style="font-size:13.5px;color:var(--slate-500);margin:0;">Bugungi qabullaringiz va so'rovlar shu yerda</p>
+        </div>
+        <button class="btn-ghost" id="simulateNewBtn" style="font-size:13px;padding:9px 14px;">+ Yangi so'rov simulyatsiyasi</button>
+      </div>
+
+      <div id="statsRow" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:16px;margin-bottom:28px;"></div>
+
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+        <h2 class="font-display" style="font-size:16.5px;font-weight:800;margin:0;">Qabullar ro'yxati</h2>
+        <div style="display:flex;gap:6px;" id="statusFilters"></div>
+      </div>
+
+      <div id="apptList" style="display:flex;flex-direction:column;gap:12px;"></div>
+    </main>
+  </div>
+</div>
+
+<div class="mode-switch">
+  <button data-mode="patient" class="active">Bemor sayti</button>
+  <button data-mode="dashboard">Shifokor kabineti</button>
+</div>
+
+{{ doctor_data|json_script:"doctors-data" }}
+<script>
+(function(){
+  "use strict";
+
+  /* ---------- DATA ---------- */
+  const doctors = JSON.parse(document.getElementById('doctors-data').textContent).map((d, index) => ({
+    ...d,
+    init: d.name.split(/\s+/).map(part => part[0]).join('').slice(0, 2).toUpperCase(),
+    color: [
+      "linear-gradient(135deg,#0EA5E9,#0D9488)",
+      "linear-gradient(135deg,#0D9488,#134E4A)",
+      "linear-gradient(135deg,#10B981,#0D9488)",
+      "linear-gradient(135deg,#64748B,#0F172A)",
+      "linear-gradient(135deg,#F59E0B,#B45309)",
+      "linear-gradient(135deg,#0EA5E9,#1D4ED8)"
+    ][index % 6]
+  }));
+  let activeSpecialty = "Barchasi";
+  let searchTerm = "";
+
+  // Qabullar backend orqali yuklanadi. Bu sahifada demo/fake ma'lumotlar yo'q.
+  let appts = [];
+  let apptIdSeq = 200;
+  let activeStatusFilter = "all";
+  let activeDashTab = "dashboard";
+
+  const statusMeta = {
+    pending:{label:"Kutilmoqda", cls:"badge-pending"},
+    confirmed:{label:"Tasdiqlandi", cls:"badge-confirmed"},
+    cancelled:{label:"Bekor qilindi", cls:"badge-cancelled"},
+    completed:{label:"Tugatildi", cls:"badge-completed"},
+  };
+
+  const fmtSom = n => n.toLocaleString('ru-RU') + " so'm";
+
+  /* ---------- RESPONSIVE NAV TOGGLES ---------- */
+  const mq = window.matchMedia('(min-width:768px)');
+  function applyNavVisibility(){
+    document.getElementById('desktopNav').style.display = mq.matches ? 'flex' : 'none';
+    document.getElementById('ctaBook').style.display = mq.matches ? 'inline-block' : 'none';
+    document.getElementById('menuToggle').style.display = mq.matches ? 'none' : 'flex';
+    if(mq.matches) document.getElementById('mobileNav').style.display = 'none';
+  }
+  applyNavVisibility();
+  mq.addEventListener('change', applyNavVisibility);
+  document.getElementById('menuToggle').addEventListener('click', ()=>{
+    const nav = document.getElementById('mobileNav');
+    nav.style.display = nav.style.display === 'none' ? 'block' : 'none';
+  });
+
+  /* ---------- LANGUAGE SWITCH (placeholder, UI only) ---------- */
+  document.getElementById('langPill').addEventListener('click', (e)=>{
+    const btn = e.target.closest('button');
+    if(!btn) return;
+    document.querySelectorAll('#langPill button').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+  });
+
+  /* ---------- SPECIALTY FILTERS ---------- */
+  const specWrap = document.getElementById('specialtyFilters');
+  function renderSpecialtyChips(){
+    specWrap.innerHTML = "";
+    specialties.forEach(s=>{
+      const b = document.createElement('button');
+      b.className = "chip" + (s===activeSpecialty ? " active" : "");
+      b.textContent = s;
+      b.addEventListener('click', ()=>{ activeSpecialty = s; renderSpecialtyChips(); renderDoctors(); });
+      specWrap.appendChild(b);
+    });
+  }
+
+  /* ---------- DOCTOR GRID ---------- */
+  const grid = document.getElementById('doctorGrid');
+  function renderDoctors(){
+    const term = searchTerm.trim().toLowerCase();
+    const list = doctors.filter(d=>{
+      const matchSpec = activeSpecialty === "Barchasi" || d.spec === activeSpecialty;
+      const matchTerm = !term || d.name.toLowerCase().includes(term) || d.spec.toLowerCase().includes(term);
+      return matchSpec && matchTerm;
+    });
+    grid.innerHTML = "";
+    if(list.length === 0){
+      grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px 0;color:var(--slate-500);font-size:14px;">Hech qanday shifokor topilmadi. Boshqa mutaxassislik yoki nom bilan qidirib ko\'ring.</div>';
+      return;
+    }
+    list.forEach(d=>{
+      const card = document.createElement('div');
+      card.className = "doc-card fade-in";
+      card.innerHTML = `
+        <div style="padding:18px;">
+          <div style="display:flex;gap:14px;align-items:flex-start;">
+            <div class="avatar" style="background:${d.color};">${d.init}</div>
+            <div style="flex:1;min-width:0;">
+              <div style="font-weight:700;font-size:15.5px;color:var(--slate-900);">${d.name}</div>
+              <div style="font-size:13px;color:var(--teal-700);font-weight:600;margin-top:2px;">${d.spec}</div>
+              <div style="font-size:12.5px;color:var(--slate-500);margin-top:4px;">${d.exp} yillik tajriba</div>
+            </div>
+            <div class="rating-badge">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.1 6.3 7 1-5 4.9 1.2 6.9L12 17.8 5.7 21l1.2-6.9-5-4.9 7-1L12 2z"/></svg>
+              Shifokor
+            </div>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-top:18px;padding-top:14px;border-top:1px solid var(--slate-100);">
+            <div>
+              <div style="font-size:10.5px;color:var(--slate-500);font-weight:600;">Konsultatsiya narxi</div>
+              <div class="price-tag">${fmtSom(d.price)}</div>
+            </div>
+            <button class="btn-primary book-btn" data-id="${d.id}" style="padding:10px 16px;">Qabulga yozilish</button>
+          </div>
+        </div>`;
+      grid.appendChild(card);
+    });
+    grid.querySelectorAll('.book-btn').forEach(b=>{
+      b.addEventListener('click', ()=> openBooking(Number(b.dataset.id)));
+    });
+  }
+
+  document.getElementById('doctorSearch').addEventListener('input', (e)=>{ searchTerm = e.target.value; renderDoctors(); });
+  document.getElementById('searchBtn').addEventListener('click', ()=>{
+    document.getElementById('doctors').scrollIntoView({behavior:'smooth'});
+  });
+
+  /* ---------- BOOKING MODAL ---------- */
+  const backdrop = document.getElementById('modalBackdrop');
+  const modalBody = document.getElementById('modalBody');
+  const stepDots = document.getElementById('stepDots').children;
+  let bookingState = { doctor:null, dateIdx:0, time:null, name:"", phone:"", complaint:"", step:1 };
+
+  const dayNames = ["Yak","Dush","Sesh","Chor","Pay","Jum","Shan"];
+  function nextDays(n){
+    const arr = [];
+    const today = new Date();
+    for(let i=0;i<n;i++){
+      const d = new Date(today);
+      d.setDate(today.getDate()+i);
+      arr.push({label: i===0 ? "Bugun" : dayNames[d.getDay()], num: d.getDate()});
+    }
+    return arr;
+  }
+  const dateOptions = nextDays(6);
+  const timeSlots = ["09:00","09:30","10:00","10:30","11:00","11:30","13:00","13:30","14:00","14:30","15:00","15:30"];
+  const bookedSlots = ["10:00","14:00"]; // demo: unavailable
+
+  function openBooking(docId){
+    bookingState = { doctor: doctors.find(d=>d.id===docId), dateIdx:0, time:null, name:"", phone:"", complaint:"", step:1 };
+    backdrop.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    renderModal();
+  }
+  function closeBooking(){
+    backdrop.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  document.getElementById('modalClose').addEventListener('click', closeBooking);
+  backdrop.addEventListener('click', (e)=>{ if(e.target === backdrop) closeBooking(); });
+
+  function setDots(){
+    Array.from(stepDots).forEach((dot,i)=>{
+      dot.className = "step-dot" + (i+1 < bookingState.step ? " done" : (i+1===bookingState.step ? " active" : ""));
+    });
+  }
+
+  function renderModal(){
+    setDots();
+    const d = bookingState.doctor;
+    if(bookingState.step === 1){
+      modalBody.innerHTML = `
+        <h3 class="font-display" style="font-size:19px;font-weight:800;margin:0 0 4px;">Sana va vaqtni tanlang</h3>
+        <p style="font-size:13px;color:var(--slate-500);margin:0 0 18px;">${d.name} — ${d.spec}</p>
+        <div style="display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;margin-bottom:20px;" class="hide-scrollbar" id="dateRow"></div>
+        <div style="font-size:13px;font-weight:600;color:var(--slate-700);margin-bottom:10px;">Bo'sh vaqtlar</div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:24px;" id="timeGrid"></div>
+        <button class="btn-primary" id="toStep2" style="width:100%;padding:13px;" ${bookingState.time ? "" : "disabled style='opacity:.45;'"}>Davom etish</button>
+      `;
+      const dateRow = document.getElementById('dateRow');
+      dateOptions.forEach((opt,i)=>{
+        const el = document.createElement('button');
+        el.className = "date-chip" + (i===bookingState.dateIdx ? " selected" : "");
+        el.innerHTML = `<div class="d">${opt.label}</div><div class="n">${opt.num}</div>`;
+        el.addEventListener('click', ()=>{ bookingState.dateIdx = i; renderModal(); });
+        dateRow.appendChild(el);
+      });
+      const timeGrid = document.getElementById('timeGrid');
+      timeSlots.forEach(t=>{
+        const busy = bookedSlots.includes(t);
+        const el = document.createElement('button');
+        el.className = "slot-btn" + (bookingState.time===t ? " selected" : "");
+        el.textContent = t;
+        if(busy) el.disabled = true;
+        el.addEventListener('click', ()=>{ bookingState.time = t; renderModal(); });
+        timeGrid.appendChild(el);
+      });
+      const toStep2 = document.getElementById('toStep2');
+      if(bookingState.time){
+        toStep2.addEventListener('click', ()=>{ bookingState.step = 2; renderModal(); });
+      }
+    } else if(bookingState.step === 2){
+      modalBody.innerHTML = `
+        <h3 class="font-display" style="font-size:19px;font-weight:800;margin:0 0 4px;">Ma'lumotlaringiz</h3>
+        <p style="font-size:13px;color:var(--slate-500);margin:0 0 20px;">${dateOptions[bookingState.dateIdx].label}, ${dateOptions[bookingState.dateIdx].num} — soat ${bookingState.time}</p>
+        <div style="display:flex;flex-direction:column;gap:14px;margin-bottom:22px;">
+          <div>
+            <label class="field-label">Ism va familiya</label>
+            <input class="field-input" id="inpName" placeholder="Masalan: Aziz Rahimov" value="${bookingState.name}">
+          </div>
+          <div>
+            <label class="field-label">Telefon raqami</label>
+            <input class="field-input" id="inpPhone" placeholder="+998 90 123 45 67" value="${bookingState.phone}">
+          </div>
+          <div>
+            <label class="field-label">Shikoyat / Belgilar</label>
+            <textarea class="field-input" id="inpComplaint" rows="3" placeholder="Sizni nima bezovta qilmoqda?">${bookingState.complaint}</textarea>
+          </div>
+        </div>
+        <div style="display:flex;gap:10px;">
+          <button class="btn-ghost" id="toStep1b" style="flex:1;">Orqaga</button>
+          <button class="btn-primary" id="toStep3" style="flex:2;">Tasdiqlash</button>
+        </div>
+      `;
+      document.getElementById('toStep1b').addEventListener('click', ()=>{ syncStep2Fields(); bookingState.step = 1; renderModal(); });
+      document.getElementById('toStep3').addEventListener('click', ()=>{
+        syncStep2Fields();
+        if(!bookingState.name.trim() || !bookingState.phone.trim()){
+          const nameInput = document.getElementById('inpName');
+          const phoneInput = document.getElementById('inpPhone');
+          if(!bookingState.name.trim()) nameInput.style.borderColor = '#DC2626';
+          if(!bookingState.phone.trim()) phoneInput.style.borderColor = '#DC2626';
+          return;
+        }
+        bookingState.step = 3;
+        renderModal();
+        // push into dashboard queue
+        apptIdSeq++;
+        appts.unshift({
+          id: apptIdSeq,
+          patient: bookingState.name,
+          phone: bookingState.phone,
+          time: `${dateOptions[bookingState.dateIdx].label}, ${bookingState.time}`,
+          complaint: bookingState.complaint || "Ko'rsatilmagan",
+          status: "pending"
+        });
+        renderStats(); renderAppts();
+      });
+    } else {
+      modalBody.innerHTML = `
+        <div style="text-align:center;padding:10px 0 4px;">
+          <div style="width:64px;height:64px;border-radius:50%;background:var(--mint-50);display:flex;align-items:center;justify-content:center;margin:0 auto 18px;">
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg>
+          </div>
+          <h3 class="font-display" style="font-size:19px;font-weight:800;margin:0 0 8px;">So'rovingiz qabul qilindi!</h3>
+          <p style="font-size:13.5px;color:var(--slate-500);margin:0 0 22px;line-height:1.55;">Shifokor tez orada so'rovingizni tasdiqlaydi. SMS orqali xabar beramiz.</p>
+        </div>
+        <div style="border:1px solid var(--slate-200);border-radius:14px;padding:16px;text-align:left;margin-bottom:20px;">
+          <div style="display:flex;justify-content:space-between;margin-bottom:10px;">
+            <span style="font-size:12.5px;color:var(--slate-500);">Shifokor</span>
+            <span style="font-size:13px;font-weight:700;">${d.name}</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;margin-bottom:10px;">
+            <span style="font-size:12.5px;color:var(--slate-500);">Sana va vaqt</span>
+            <span style="font-size:13px;font-weight:700;">${dateOptions[bookingState.dateIdx].label}, soat ${bookingState.time}</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <span style="font-size:12.5px;color:var(--slate-500);">Holat</span>
+            <span class="badge badge-pending"><span class="dot"></span>Tasdiqlash kutilmoqda</span>
+          </div>
+        </div>
+        <button class="btn-primary" id="closeSuccess" style="width:100%;padding:13px;">Yopish</button>
+      `;
+      document.getElementById('closeSuccess').addEventListener('click', closeBooking);
+    }
+  }
+  function syncStep2Fields(){
+    const n = document.getElementById('inpName');
+    const p = document.getElementById('inpPhone');
+    const c = document.getElementById('inpComplaint');
+    if(n) bookingState.name = n.value;
+    if(p) bookingState.phone = p.value;
+    if(c) bookingState.complaint = c.value;
+  }
+
+  function openBookingGeneric(){ openBooking(doctors[0].id); document.getElementById('doctors').scrollIntoView({behavior:'smooth', block:'start'}); }
+  document.getElementById('ctaBook').addEventListener('click', ()=> document.getElementById('doctors').scrollIntoView({behavior:'smooth'}));
+  document.getElementById('ctaBookMobile').addEventListener('click', ()=> document.getElementById('doctors').scrollIntoView({behavior:'smooth'}));
+
+  /* ---------- DASHBOARD: STATS ---------- */
+  const statsRow = document.getElementById('statsRow');
+  function renderStats(){
+    const today = appts.filter(a=>a.time.startsWith('Bugun'));
+    const pending = appts.filter(a=>a.status==='pending');
+    const confirmed = appts.filter(a=>a.status==='confirmed');
+    const cards = [
+      {label:"Bugungi qabullar", val: today.length, color:"#0EA5E9", icon:'<path d="M8 2v4M16 2v4M3 10h18M5 4h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Z"/>'},
+      {label:"Kutilayotgan zayavkalar", val: pending.length, color:"#F59E0B", icon:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l2.5 2.5"/>'},
+      {label:"Tasdiqlanganlar", val: confirmed.length, color:"#10B981", icon:'<path d="M20 6 9 17l-5-5"/>'},
+      {label:"Jami bemorlar", val: "342", color:"#7C3AED", icon:'<path d="M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"/><circle cx="10" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>'},
+    ];
+    statsRow.innerHTML = cards.map(c=>`
+      <div class="stat-card">
+        <div class="accent" style="background:${c.color};"></div>
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+          <div>
+            <div style="font-size:12px;color:var(--slate-500);font-weight:600;margin-bottom:8px;">${c.label}</div>
+            <div class="font-display" style="font-size:26px;font-weight:800;color:var(--slate-900);">${c.val}</div>
+          </div>
+          <div style="width:38px;height:38px;border-radius:10px;background:${c.color}18;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="${c.color}" stroke-width="2">${c.icon}</svg>
+          </div>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  /* ---------- DASHBOARD: STATUS FILTERS ---------- */
+  const statusFilterWrap = document.getElementById('statusFilters');
+  const filterDefs = [
+    {key:"all", label:"Barchasi"},
+    {key:"pending", label:"Kutilmoqda"},
+    {key:"confirmed", label:"Tasdiqlandi"},
+    {key:"completed", label:"Tugatildi"},
+    {key:"cancelled", label:"Bekor qilindi"},
+  ];
+  function renderStatusFilters(){
+    statusFilterWrap.innerHTML = "";
+    filterDefs.forEach(f=>{
+      const b = document.createElement('button');
+      b.className = "chip" + (f.key===activeStatusFilter ? " active" : "");
+      b.style.padding = "6px 12px";
+      b.style.fontSize = "12.5px";
+      b.textContent = f.label;
+      b.addEventListener('click', ()=>{ activeStatusFilter = f.key; renderStatusFilters(); renderAppts(); });
+      statusFilterWrap.appendChild(b);
+    });
+  }
+
+  /* ---------- DASHBOARD: APPOINTMENTS LIST ---------- */
+  const apptList = document.getElementById('apptList');
+  function renderAppts(){
+    const list = activeStatusFilter === 'all' ? appts : appts.filter(a=>a.status===activeStatusFilter);
+    apptList.innerHTML = "";
+    if(list.length === 0){
+      apptList.innerHTML = '<div style="text-align:center;padding:40px 0;color:var(--slate-500);font-size:14px;border:1px dashed var(--slate-300);border-radius:14px;">Bu holatda qabullar mavjud emas.</div>';
+      return;
+    }
+    list.forEach(a=>{
+      const meta = statusMeta[a.status];
+      const row = document.createElement('div');
+      row.className = "appt-row fade-in";
+      row.innerHTML = `
+        <div style="display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;">
+          <div style="display:flex;gap:12px;flex:1;min-width:220px;">
+            <div class="avatar" style="width:42px;height:42px;font-size:13px;background:linear-gradient(135deg,#64748B,#0F172A);">${a.patient.split(' ').map(w=>w[0]).slice(0,2).join('')}</div>
+            <div style="min-width:0;">
+              <div style="font-weight:700;font-size:14.5px;color:var(--slate-900);">${a.patient}</div>
+              <div style="font-size:12.5px;color:var(--slate-500);margin-top:2px;">${a.phone}</div>
+              <div style="font-size:12.5px;color:var(--slate-700);margin-top:6px;line-height:1.4;max-width:420px;"><span style="color:var(--slate-500);">Shikoyat:</span> ${a.complaint}</div>
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;min-width:150px;">
+            <div style="font-size:12.5px;color:var(--slate-500);font-weight:600;display:flex;align-items:center;gap:5px;">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l2.5 2.5"/></svg>
+              ${a.time}
+            </div>
+            <span class="badge ${meta.cls}"><span class="dot"></span>${meta.label}</span>
+          </div>
+        </div>
+        <div style="display:flex;gap:8px;margin-top:14px;padding-top:14px;border-top:1px solid var(--slate-100);flex-wrap:wrap;" data-actions="${a.id}"></div>
+      `;
+      const actionsWrap = row.querySelector(`[data-actions="${a.id}"]`);
+      if(a.status === 'pending'){
+        actionsWrap.innerHTML = `
+          <button class="act-btn act-confirm" data-act="confirmed">Tasdiqlash</button>
+          <button class="act-btn act-cancel" data-act="cancelled">Bekor qilish</button>
+        `;
+      } else if(a.status === 'confirmed'){
+        actionsWrap.innerHTML = `
+          <button class="act-btn act-done" data-act="completed">Tugatildi</button>
+          <button class="act-btn act-cancel" data-act="cancelled">Bekor qilish</button>
+        `;
+      } else {
+        actionsWrap.innerHTML = `<span style="font-size:12px;color:var(--slate-400);font-style:italic;">Amal talab qilinmaydi</span>`;
+      }
+      actionsWrap.querySelectorAll('button[data-act]').forEach(btn=>{
+        btn.addEventListener('click', ()=>{
+          a.status = btn.dataset.act;
+          renderStats(); renderAppts();
+        });
+      });
+      apptList.appendChild(row);
+    });
+  }
+
+  /* ---------- DASHBOARD: ALERT BANNER ---------- */
+  const alertSlot = document.getElementById('alertBannerSlot');
+  function showAlertBanner(name){
+    alertSlot.innerHTML = `
+      <div class="alert-banner fade-in">
+        <div class="pulse-ring" style="width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.18);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>
+        </div>
+        <div style="flex:1;">
+          <div style="font-weight:700;font-size:14px;">Yangi qabul so'rovi keldi</div>
+          <div style="font-size:12.5px;opacity:.9;">${name} tomonidan yuborilgan so'rovni ko'rib chiqing.</div>
+        </div>
+        <button id="dismissAlert" style="background:rgba(255,255,255,.15);border:none;color:#fff;border-radius:9px;padding:8px 14px;font-size:12.5px;font-weight:700;">Ko'rish</button>
+      </div>
+    `;
+    document.getElementById('dismissAlert').addEventListener('click', ()=>{ alertSlot.innerHTML = ""; document.getElementById('apptList').scrollIntoView({behavior:'smooth', block:'start'}); });
+  }
+  document.getElementById('simulateNewBtn').addEventListener('click', ()=>{
+    const names = ["Shahnoza Berdiyeva","Aziz Rahimov","Malika Nosirova","Umid Qahhorov"];
+    const complaints = ["Yurak sohasida og'riq","Bosh og'rig'i va bezovtalik","Rejalashtirilgan tekshiruv","Tez charchash"];
+    const randName = names[Math.floor(Math.random()*names.length)];
+    apptIdSeq++;
+    appts.unshift({
+      id: apptIdSeq,
+      patient: randName,
+      phone: "+998 9" + Math.floor(Math.random()*9) + " " + Math.floor(100+Math.random()*900) + " " + Math.floor(10+Math.random()*90) + " " + Math.floor(10+Math.random()*90),
+      time: "Bugun, " + (9+Math.floor(Math.random()*8)) + ":00",
+      complaint: complaints[Math.floor(Math.random()*complaints.length)],
+      status: "pending"
+    });
+    showAlertBanner(randName);
+    renderStats(); renderAppts();
+  });
+
+  /* ---------- MODE SWITCH ---------- */
+  function setMode(mode){
+    document.body.classList.toggle('view-dashboard', mode === 'dashboard');
+    document.querySelectorAll('.mode-switch button').forEach(b=> b.classList.toggle('active', b.dataset.mode === mode));
+    window.scrollTo({top:0, behavior:'instant' in window ? 'instant' : 'auto'});
+    if(mode === 'dashboard') location.hash = '#/doctor/dashboard'; else location.hash = '';
+  }
+  document.querySelectorAll('.mode-switch button').forEach(b=>{
+    b.addEventListener('click', ()=> setMode(b.dataset.mode));
+  });
+  document.getElementById('toDashboardLink').addEventListener('click', (e)=>{ e.preventDefault(); setMode('dashboard'); });
+  document.getElementById('backToSite').addEventListener('click', (e)=>{ e.preventDefault(); setMode('patient'); });
+
+  if(location.hash === '#/doctor/dashboard') setMode('dashboard');
+
+  /* ---------- DASHBOARD SIDEBAR TABS (visual only for non-dashboard tabs) ---------- */
+  document.querySelectorAll('.dash-navlink[data-tab]').forEach(link=>{
+    link.addEventListener('click', (e)=>{
+      e.preventDefault();
+      document.querySelectorAll('.dash-navlink[data-tab]').forEach(l=>l.classList.remove('active'));
+      link.classList.add('active');
+      activeDashTab = link.dataset.tab;
+    });
+  });
+
+  /* ---------- INIT ---------- */
+  renderSpecialtyChips();
+  renderDoctors();
+  renderStats();
+  renderStatusFilters();
+  renderAppts();
+})();
+</script>
+</body>
+</html>
